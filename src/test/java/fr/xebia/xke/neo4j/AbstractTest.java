@@ -26,13 +26,9 @@ public class AbstractTest {
     @Before
     public void setUp() throws Exception {
          graphDb = new TestGraphDatabaseFactory()
-                        .newImpermanentDatabaseBuilder().
-                        setConfig( GraphDatabaseSettings.node_keys_indexable, "name" ).
-                        setConfig( GraphDatabaseSettings.relationship_keys_indexable, "contient" ).
-                        setConfig( GraphDatabaseSettings.node_auto_indexing, "true" ).
-                        setConfig( GraphDatabaseSettings.relationship_auto_indexing, "true" ).
-                        //.loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())
-                        newGraphDatabase();
+                        .newImpermanentDatabaseBuilder()
+                        .loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())
+                        .newGraphDatabase();
 
         InputStream is = getClass().getResourceAsStream(DATASET_PATH);
         Scanner scanner = new Scanner(is);

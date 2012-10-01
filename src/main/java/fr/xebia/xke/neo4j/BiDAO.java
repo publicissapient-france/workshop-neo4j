@@ -8,6 +8,8 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.helpers.collection.IteratorUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,5 +36,23 @@ public class BiDAO {
             recommendedProducts.add((String) node.getProperty("name"));
         }
         return recommendedProducts;
+    }
+
+
+    public int getNbSell(String productName, String color, Date date) {
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
+        Map params = ImmutableMap.of("productName", productName,
+                                    "date", "Date"+sdf.format(date),
+                                    "colorName", color);
+
+        ExecutionResult result = engine.execute("start date=node:node_auto_index(name={date}), " +
+                "product=node:node_auto_index(name={productName}), " +
+                "color=node:node_auto_index(name={colorName}) " +
+                "MATCH date<-[:validerLe]-sc-[:contient]->product-[:couleur]->color " +
+                "RETURN count(*)", params);
+
+        int nbProducts = Integer.parseInt(result.iterator().next().get("count(*)").toString());
+        return nbProducts;
     }
 }
