@@ -1,11 +1,11 @@
 package fr.xebia.xke.neo4j;
 
-import static junit.framework.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class BiDAOTest extends AbstractTest {
 
@@ -20,7 +20,6 @@ public class BiDAOTest extends AbstractTest {
     @Test
     public void givenShoppingCartName_testProductRecommendation(){
         List<String> result = biDAO.getRecommendedProductsFor("ShoppingCart2");
-        List<String> expected = Arrays.asList("SacHermes");
-        assertEquals(expected, result);
+        assertThat(result).containsExactly("SacHermes");
     }
 }

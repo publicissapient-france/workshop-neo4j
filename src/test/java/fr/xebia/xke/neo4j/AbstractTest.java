@@ -44,7 +44,7 @@ public class AbstractTest {
         ExecutionResult result = engine.execute(dataSetQuery.toString());
     }
 
-    @Test()
+    @Test
     public void testThatDatabaseIsInitialised() {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         ExecutionResult result = engine.execute("START n=node(*) RETURN count(n)");
