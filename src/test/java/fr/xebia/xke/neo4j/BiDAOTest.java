@@ -22,8 +22,11 @@ public class BiDAOTest extends AbstractTest {
 
     @Test
     public void givenShoppingCartName_testProductRecommendation(){
-        List<String> result = biDAO.getRecommendedProductsFor("ShoppingCart2");
-        assertThat(result).containsExactly("SacHermes");
+        List<String> result = biDAO.getRecommendedProductsFor("EscarppinsJinny");
+        assertThat(result).containsOnly("SacHermes", "ChaussureLouboutin");
+
+        result = biDAO.getRecommendedProductsFor("SacLouisVitton");
+        assertThat(result).containsOnly("ChaussureLouboutin", "SacHermes");
     }
 
     @Test

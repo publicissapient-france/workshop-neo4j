@@ -25,17 +25,17 @@ public class BiDAO {
         this.graphDb = graphDb;
     }
 
-    public List<String> getRecommendedProductsFor(String shoppingCartName) {
+    public List<String> getRecommendedProductsFor(String productName) {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
-        Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
-        ExecutionResult result = engine.execute("start sc=node:node_auto_index(name={shoppingCartName}) " +
-                "MATCH sc-[:CONTAINS]->prod1<-[:CONTAINS]-otherSc-[:CONTAINS]->prod2 " +
-                "WHERE not (prod1 = prod2) AND not (sc-[:CONTAINS]->prod2) " +
-                "RETURN prod2", params);
+        Map params = ImmutableMap.of("productName", productName);
+        ExecutionResult result = engine.execute("start product=node:node_auto_index(name={productName})\n" +
+                "MATCH product<-[:CONTAINS]-shoppingCart-[:CONTAINS]->recommendedProducts\n" +
+                "WHERE not (product = recommendedProducts)\n" +
+                "RETURN recommendedProducts", params);
 
         List<String> recommendedProducts = Lists.newArrayList();
-        Iterator<Node> n_column = result.columnAs("prod2");
-        for (Node node : IteratorUtil.asIterable(n_column)) {
+        Iterator<Node> recommendedProductsColumn = result.columnAs("recommendedProducts");
+        for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
             recommendedProducts.add((String) node.getProperty("name"));
         }
         return recommendedProducts;
