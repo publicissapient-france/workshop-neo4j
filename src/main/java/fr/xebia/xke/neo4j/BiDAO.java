@@ -28,9 +28,9 @@ public class BiDAO {
     public List<String> getRecommendedProductsFor(String productName) {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         Map params = ImmutableMap.of("productName", productName);
-        ExecutionResult result = engine.execute("start product=node:node_auto_index(name={productName})\n" +
-                "MATCH product<-[:CONTAINS]-shoppingCart-[:CONTAINS]->recommendedProducts\n" +
-                "WHERE not (product = recommendedProducts)\n" +
+        ExecutionResult result = engine.execute("start product=node:node_auto_index(name={productName}) " +
+                "MATCH product<-[:CONTAINS]-shoppingCart-[:CONTAINS]->recommendedProducts " +
+                "WHERE not (product = recommendedProducts) " +
                 "RETURN recommendedProducts", params);
 
         List<String> recommendedProducts = Lists.newArrayList();
@@ -42,7 +42,7 @@ public class BiDAO {
     }
 
 
-    public int getNbSell(String productName, String color, Date date) {
+    public int getNbSales(String productName, String color, Date date) {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
         Map params = ImmutableMap.of("productName", productName,

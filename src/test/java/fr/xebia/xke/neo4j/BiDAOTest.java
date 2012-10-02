@@ -3,7 +3,6 @@ package fr.xebia.xke.neo4j;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,13 +29,19 @@ public class BiDAOTest extends AbstractTest {
     }
 
     @Test
-    public void givenDateProductNameAndColor_testProductNbSell(){
+    public void givenDateProductNameAndColor_testNbSales(){
         Calendar cal = Calendar.getInstance();
         cal.set(2012,0, 15);
-        Date date15Janvier2012 = cal.getTime();
 
-        int nbSell = biDAO.getNbSell("EscarppinsJinny", "Noir", date15Janvier2012);
+        int nbSell = biDAO.getNbSales("EscarppinsJinny", "Noir", cal.getTime());
         assertThat(nbSell).isEqualTo(2);
+
+        cal.set(2000,0, 02);
+        nbSell = biDAO.getNbSales("ChaussureLouboutin", "Noir", cal.getTime());
+        assertThat(nbSell).isEqualTo(1);
+
+        nbSell = biDAO.getNbSales("ChaussureLouboutin", "Jaune", cal.getTime());
+        assertThat(nbSell).isEqualTo(1);
     }
 
     @Test
