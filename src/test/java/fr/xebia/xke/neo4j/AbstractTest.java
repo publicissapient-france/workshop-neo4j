@@ -25,9 +25,9 @@ public class AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-         graphDb = new TestGraphDatabaseFactory()
-                        .newImpermanentDatabaseBuilder()
-                        .loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())
+         graphDb = new TestGraphDatabaseFactory()//
+                        .newImpermanentDatabaseBuilder()//
+                        .loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())//
                         .newGraphDatabase();
 
         InputStream is = getClass().getResourceAsStream(DATASET_PATH);
@@ -45,7 +45,7 @@ public class AbstractTest {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         ExecutionResult result = engine.execute("START n=node(*) RETURN count(n)");
         int nbNodes = Integer.parseInt(result.iterator().next().get("count(n)").toString());
-        Assert.assertEquals("After initialization the database should contains 13 nodes.", 13, nbNodes);
+        Assert.assertEquals("After initialization the database should contains 18 nodes.", 18, nbNodes);
     }
 
     @After

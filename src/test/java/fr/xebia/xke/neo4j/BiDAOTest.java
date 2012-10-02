@@ -27,12 +27,22 @@ public class BiDAOTest extends AbstractTest {
     }
 
     @Test
-    public void givenDateProductAndColorName_testProductNbSell(){
+    public void givenDateProductNameAndColor_testProductNbSell(){
         Calendar cal = Calendar.getInstance();
         cal.set(2012,0, 15);
         Date date15Janvier2012 = cal.getTime();
 
         int nbSell = biDAO.getNbSell("EscarppinsJinny", "Noir", date15Janvier2012);
         assertThat(nbSell).isEqualTo(2);
+    }
+
+    @Test
+    public void givenClientName_testSponsored(){
+
+        List<String> sponsored = biDAO.getSponsored("client1");
+        assertThat(sponsored).containsOnly("client2", "client3", "client4", "client5");
+
+        sponsored = biDAO.getSponsored("client3");
+        assertThat(sponsored).containsOnly("client4");
     }
 }
