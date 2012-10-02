@@ -27,8 +27,10 @@ public class AbstractTest {
     public void setUp() throws Exception {
          graphDb = new TestGraphDatabaseFactory()//
                         .newImpermanentDatabaseBuilder()//
-                        .loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())//
+                        //.newEmbeddedDatabaseBuilder(DB_PATH)//
+                        .loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())
                         .newGraphDatabase();
+
 
         InputStream is = getClass().getResourceAsStream(DATASET_PATH);
         Scanner scanner = new Scanner(is);
@@ -50,6 +52,8 @@ public class AbstractTest {
 
     @After
     public void tearDown() throws Exception {
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        engine.execute("START n=node(*) MATCH n-[r?]-() WHERE ID(n) <> 0 DELETE n,r");
         graphDb.shutdown();
     }
 }
