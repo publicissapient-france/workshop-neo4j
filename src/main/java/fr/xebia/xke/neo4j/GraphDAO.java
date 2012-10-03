@@ -25,6 +25,32 @@ public class GraphDAO {
     }
 
     /**
+     * @param clientName Le nom du client qui parrainer le filleul
+     * @param sponsoredClientName Le nom du filleul
+     */
+    public void addNewSponsoredClient(String clientName, String sponsoredClientName) {
+        Transaction tx = graphDb.beginTx();
+        try {
+            ReadableIndex<Node> index = graphDb.index()
+                    .getNodeAutoIndexer()
+                    .getAutoIndex();
+
+            Node clientNode = index.get("name", clientName).getSingle();
+
+            Node sponsoredNode = graphDb.createNode();
+            sponsoredNode.setProperty("name", sponsoredClientName);
+
+            clientNode.createRelationshipTo(sponsoredNode, RelTypes.SPONSORED);
+
+            tx.success();
+        } catch (Exception e) {
+            tx.failure();
+        } finally {
+            tx.finish();
+        }
+    }
+
+    /**
      * @param productName Nom du produit du quel on veut les recommandations
      * @return La liste des noms de produit recommandés
      */
@@ -88,32 +114,5 @@ public class GraphDAO {
             sponsored.add(path.endNode().getProperty("name").toString());
         }
         return sponsored;
-    }
-
-    /**
-     *
-     * @param clientName Le nom du client qui parrainer le filleul
-     * @param sponsoredClientName Le nom du filleul
-     */
-    public void addSponsoredClient(String clientName, String sponsoredClientName) {
-        Transaction tx = graphDb.beginTx();
-        try {
-            ReadableIndex<Node> index = graphDb.index()
-                    .getNodeAutoIndexer()
-                    .getAutoIndex();
-
-            Node clientNode = index.get("name", clientName).getSingle();
-
-            Node sponsoredNode = graphDb.createNode();
-            sponsoredNode.setProperty("name", sponsoredClientName);
-
-            clientNode.createRelationshipTo(sponsoredNode, RelTypes.SPONSORED);
-
-            tx.success();
-        } catch (Exception e) {
-            tx.failure();
-        } finally {
-            tx.finish();
-        }
     }
 }
