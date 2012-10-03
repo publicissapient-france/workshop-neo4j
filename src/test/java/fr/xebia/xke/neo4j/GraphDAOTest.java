@@ -19,7 +19,7 @@ public class GraphDAOTest extends AbstractTest {
     }
 
     @Test
-    public void givenShoppingCartName_testProductRecommendation(){
+    public void givenShoppingCartName_testProductRecommendation() {
         List<String> result = graphDAO.getRecommendedProductsFor("EscarppinsJinny");
         assertThat(result).containsOnly("SacHermes", "ChaussureLouboutin");
 
@@ -28,14 +28,14 @@ public class GraphDAOTest extends AbstractTest {
     }
 
     @Test
-    public void givenDateProductNameAndColor_testNbSales(){
+    public void givenDateProductNameAndColor_testNbSales() {
         Calendar cal = Calendar.getInstance();
-        cal.set(2012,Calendar.JANUARY, 15);
+        cal.set(2012, Calendar.JANUARY, 15);
 
         int nbSell = graphDAO.getNumberOfSales("EscarppinsJinny", "Noir", cal.getTime());
         assertThat(nbSell).isEqualTo(2);
 
-        cal.set(2000,Calendar.JANUARY, 2);
+        cal.set(2000, Calendar.JANUARY, 2);
         nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", "Noir", cal.getTime());
         assertThat(nbSell).isEqualTo(1);
 
@@ -44,11 +44,19 @@ public class GraphDAOTest extends AbstractTest {
     }
 
     @Test
-    public void givenClientName_testSponsored(){
+    public void givenClientName_testSponsored() {
         List<String> sponsored = graphDAO.getRecursiveSponsoredClient("client1");
         assertThat(sponsored).containsOnly("client2", "client3", "client4", "client5");
 
         sponsored = graphDAO.getRecursiveSponsoredClient("client3");
         assertThat(sponsored).containsOnly("client4");
+    }
+
+    @Test
+    public void givenClientName_testAddSponsoredClient() {
+        graphDAO.addSponsoredClient("client5", "client6");
+
+        List<String> sponsored = graphDAO.getRecursiveSponsoredClient("client5");
+        assertThat(sponsored).containsOnly("client6");
     }
 }

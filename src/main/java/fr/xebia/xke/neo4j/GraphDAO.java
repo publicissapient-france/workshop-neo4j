@@ -7,10 +7,8 @@ import fr.xebia.xke.neo4j.domains.relations.RelTypes;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Path;
+import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.index.ReadableIndex;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.helpers.collection.IteratorUtil;
@@ -48,16 +46,17 @@ public class GraphDAO {
 
     /**
      * @param productName Nom du produit à compter
-     * @param color Couleur du produit à compter
-     * @param date Date à la qu'elle le produit à été acheté
+     * @param color       Couleur du produit à compter
+     * @param date        Date à la qu'elle le produit à été acheté
      * @return nombre de vente du produit, de cette couleur à cette date
      */
+
     public int getNumberOfSales(String productName, String color, Date date) {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
-        String formattedDate = "Date"+DateFormatUtils.format(date, "dd_MM_yyyy");
+        String formattedDate = "Date" + DateFormatUtils.format(date, "dd_MM_yyyy");
         Map params = ImmutableMap.of("productName", productName,
-                                    "date", formattedDate,
-                                    "colorName", color);
+                "date", formattedDate,
+                "colorName", color);
 
         ExecutionResult result = engine.execute("start date=node:node_auto_index(name={date}), " +
                 "product=node:node_auto_index(name={productName}), " +
@@ -69,7 +68,6 @@ public class GraphDAO {
     }
 
     /**
-     *
      * @param clientName Nom du client à qui on veut connaitre les fieulles de façon récusive
      * @return Les noms de tous les fieulles
      */
@@ -86,9 +84,36 @@ public class GraphDAO {
                 .traverse(client);
 
         List<String> sponsored = Lists.newArrayList();
-        for (Path path : traverser){
+        for (Path path : traverser) {
             sponsored.add(path.endNode().getProperty("name").toString());
         }
         return sponsored;
+    }
+
+    /**
+     *
+     * @param clientName Le nom du client qui parrainer le filleul
+     * @param sponsoredClientName Le nom du filleul
+     */
+    public void addSponsoredClient(String clientName, String sponsoredClientName) {
+        Transaction tx = graphDb.beginTx();
+        try {
+            ReadableIndex<Node> index = graphDb.index()
+                    .getNodeAutoIndexer()
+                    .getAutoIndex();
+
+            Node clientNode = index.get("name", clientName).getSingle();
+
+            Node sponsoredNode = graphDb.createNode();
+            sponsoredNode.setProperty("name", sponsoredClientName);
+
+            clientNode.createRelationshipTo(sponsoredNode, RelTypes.SPONSORED);
+
+            tx.success();
+        } catch (Exception e) {
+            tx.failure();
+        } finally {
+            tx.finish();
+        }
     }
 }

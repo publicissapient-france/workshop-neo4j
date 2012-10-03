@@ -41,3 +41,12 @@ En parlant de cette nouvelle tâche avec Didier au café, celui-ci vous parle de
 Il vous donne même un lien sur la doc : <http://docs.neo4j.org/chunked/stable/tutorial-traversal-java-api.html>
 
 	GraphDAO.getRecursiveSponsoredClient
+
+
+### Parrainage
+
+Il y a un bug dans le mécanisme des parrainages. Nous décidons de faire table rase et de recoder la méthode qui permet à un client de parrainer un filleul.
+
+    GraphDAO.addSponsoredClient
+
+Didier (qui connait décidément bien les bases graphes :) vous parle du mécanisme d'indexation automatique fourni par Neo4J et vous conseille la doc <http://docs.neo4j.org/chunked/milestone/auto-indexing.html>
