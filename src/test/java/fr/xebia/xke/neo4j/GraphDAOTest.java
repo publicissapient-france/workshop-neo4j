@@ -4,53 +4,51 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class BiDAOTest extends AbstractTest {
+public class GraphDAOTest extends AbstractTest {
 
-    private BiDAO biDAO;
+    private GraphDAO graphDAO;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        biDAO = new BiDAO(graphDb);
+        graphDAO = new GraphDAO(graphDb);
     }
 
     @Test
     public void givenShoppingCartName_testProductRecommendation(){
-        List<String> result = biDAO.getRecommendedProductsFor("EscarppinsJinny");
+        List<String> result = graphDAO.getRecommendedProductsFor("EscarppinsJinny");
         assertThat(result).containsOnly("SacHermes", "ChaussureLouboutin");
 
-        result = biDAO.getRecommendedProductsFor("SacLouisVitton");
+        result = graphDAO.getRecommendedProductsFor("SacLouisVitton");
         assertThat(result).containsOnly("ChaussureLouboutin", "SacHermes");
     }
 
     @Test
     public void givenDateProductNameAndColor_testNbSales(){
         Calendar cal = Calendar.getInstance();
-        cal.set(2012,0, 15);
+        cal.set(2012,Calendar.JANUARY, 15);
 
-        int nbSell = biDAO.getNbSales("EscarppinsJinny", "Noir", cal.getTime());
+        int nbSell = graphDAO.getNumberOfSales("EscarppinsJinny", "Noir", cal.getTime());
         assertThat(nbSell).isEqualTo(2);
 
-        cal.set(2000,0, 02);
-        nbSell = biDAO.getNbSales("ChaussureLouboutin", "Noir", cal.getTime());
+        cal.set(2000,Calendar.JANUARY, 2);
+        nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", "Noir", cal.getTime());
         assertThat(nbSell).isEqualTo(1);
 
-        nbSell = biDAO.getNbSales("ChaussureLouboutin", "Jaune", cal.getTime());
+        nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", "Jaune", cal.getTime());
         assertThat(nbSell).isEqualTo(1);
     }
 
     @Test
     public void givenClientName_testSponsored(){
-
-        List<String> sponsored = biDAO.getSponsored("client1");
+        List<String> sponsored = graphDAO.getRecursiveSponsoredClient("client1");
         assertThat(sponsored).containsOnly("client2", "client3", "client4", "client5");
 
-        sponsored = biDAO.getSponsored("client3");
+        sponsored = graphDAO.getRecursiveSponsoredClient("client3");
         assertThat(sponsored).containsOnly("client4");
     }
 }

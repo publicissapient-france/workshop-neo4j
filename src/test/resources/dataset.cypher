@@ -1,4 +1,4 @@
-start root=node(0)  
+start root=node(0)
 create (Cher{name:'Cher'}),(PasCher{name:'PasCher'}),(Jaune{name:'Jaune'}),(Noir{name:'Noir'}),(Marron{name:'Marron'}),
 (SacHermes{name:'SacHermes'}), (EscarppinsJinny{name:'EscarppinsJinny'}), (SacLouisVitton{name:'SacLouisVitton'}),
 (ChaussureLouboutin{name:'ChaussureLouboutin'}),
