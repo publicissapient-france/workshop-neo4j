@@ -3,7 +3,7 @@ create (Cher{name:'Cher'}),(PasCher{name:'PasCher'}),(Jaune{name:'Jaune'}),(Noir
 (SacHermes{name:'SacHermes'}), (EscarppinsJinny{name:'EscarppinsJinny'}), (SacLouisVitton{name:'SacLouisVitton'}),
 (ChaussureLouboutin{name:'ChaussureLouboutin'}),
 (ShoppingCart1{name:'ShoppingCart1'}), (ShoppingCart2{name:'ShoppingCart2'}), (ShoppingCart3{name:'ShoppingCart3'}),
-(Date15_01_2012{name:'Date15_01_2012'}), (Date02_01_2000{name:'Date02_01_2000'}), (Matin{name:'Matin'}), (Lundi{name:'Lundi'}),
+(Date15_01_2012{name:'Date15_01_2012'}), (Date02_01_2000{name:'Date02_01_2000'}), (Lundi{name:'Lundi'}),
 (Client1{name:'client1'}), (Client2{name:'client2'}), (Client3{name:'client3'}), (Client4{name:'client4'}), (Client5{name:'client5'}),
 
 Client1-[:SPONSORED]->Client2, Client2-[:SPONSORED]->Client3, Client3-[:SPONSORED]->Client4, Client2-[:SPONSORED]->Client5,

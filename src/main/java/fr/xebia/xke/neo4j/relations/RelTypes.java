@@ -1,4 +1,4 @@
-package fr.xebia.xke.neo4j.domains.relations;
+package fr.xebia.xke.neo4j.relations;
 
 import org.neo4j.graphdb.RelationshipType;
 

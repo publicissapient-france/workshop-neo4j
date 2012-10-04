@@ -3,7 +3,7 @@ package fr.xebia.xke.neo4j;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import fr.xebia.xke.neo4j.domains.relations.RelTypes;
+import fr.xebia.xke.neo4j.relations.RelTypes;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
