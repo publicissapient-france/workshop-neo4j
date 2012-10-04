@@ -9,7 +9,7 @@ Etant un pros de la Business Intelligence, on fait appel à vous...
 Pour ce faire vous devrez implémenter diverses méthodes qui permettront d'analyser les stats enregistrées par le site dans une base de données Neo4J.
 
 Pour vous entrainer on vous met à disposition un environnement de test avec des data déjà prêtes.
-Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/?id=1o3cctt>
+Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/?id=f4a0do>
 
 ### La recommandation de produit
 
