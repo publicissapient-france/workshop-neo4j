@@ -13,7 +13,7 @@ Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/?id=f4a0do
 
 ### La recommandation de produit
 
-La première chose qui saute au yeux quand l'on arrive sur le site, c'est qu'il n'y pas de recommandation de produit. Aussi on vous demande avant toute chose d'implémenter une méthode permettant à partir d'un nom de produit de retrouver tous les produits qui ont été acheté dans le même panier que ce dernier. Didier votre collègue vous suggère d'utiliser les requêtes `Cypher`, directement dans la console Neo4j.
+La première chose qui saute au yeux quand on arrive sur le site, c'est qu'il n'y pas de recommandation de produit. Aussi vous demande t-on, avant toute chose, d'implémenter une méthode permettant à partir d'un nom de produit de retrouver tous les produits qui ont été acheté dans le même panier que ce dernier. Didier votre collègue vous suggère d'utiliser les requêtes `Cypher`, directement dans la console Neo4j.
 
 Une fois votre requête prête vous pourrez implémenter son execution dans la méthode
 
