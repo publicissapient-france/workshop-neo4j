@@ -6,7 +6,7 @@ create (Cher{name:'Cher'}),(PasCher{name:'PasCher'}),(Jaune{name:'Jaune'}),(Noir
 (Date15_01_2012{name:'Date15_01_2012'}), (Date02_01_2000{name:'Date02_01_2000'}), (Lundi{name:'Lundi'}),
 (Client1{name:'client1'}), (Client2{name:'client2'}), (Client3{name:'client3'}), (Client4{name:'client4'}), (Client5{name:'client5'}),
 
-Client1-[:SPONSORED]->Client2, Client2-[:SPONSORED]->Client3, Client3-[:SPONSORED]->Client4, Client2-[:SPONSORED]->Client5,
+Client1-[:HAS_SPONSORED]->Client2, Client2-[:HAS_SPONSORED]->Client3, Client3-[:HAS_SPONSORED]->Client4, Client2-[:HAS_SPONSORED]->Client5,
 Client1-[:OWN]->ShoppingCart1, Client4-[:OWN]->ShoppingCart2,
 
 ShoppingCart1-[:CONTAINS]->SacHermes, ShoppingCart1-[:CONTAINS]->EscarppinsJinny,

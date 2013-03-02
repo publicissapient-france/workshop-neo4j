@@ -25,14 +25,14 @@ public class GraphDAO {
     }
 
     /**
-     * @param clientName Le nom du client qui parrainer le filleul
-     * @param sponsoredClientName Le nom du filleul
+     * @param existingClientName Le nom du client existant qui veut parrainer le filleul
+     * @param sponsoredClientName Le nom du filleul qui est créé
      */
-    public void addNewSponsoredClient(String clientName, String sponsoredClientName) {
+    public void addNewSponsoredClient(String existingClientName, String sponsoredClientName) {
     }
 
     /**
-     * @param productName Nom du produit du quel on veut les recommandations
+     * @param productName Nom du produit pour lequel on veut des recommandations
      * @return La liste des noms de produit recommandés
      */
     public List<String> getRecommendedProductsFor(String productName) {
@@ -43,7 +43,7 @@ public class GraphDAO {
     /**
      * @param productName Nom du produit à compter
      * @param color       Couleur du produit à compter
-     * @param date        Date à la qu'elle le produit à été acheté
+     * @param date        Date à la qu'elle le produit a été acheté
      * @return nombre de vente du produit, de cette couleur à cette date
      */
 
@@ -52,7 +52,7 @@ public class GraphDAO {
     }
 
     /**
-     * @param clientName Nom du client à qui on veut connaitre les fieulles de façon récusive
+     * @param clientName Nom du client pour lequel on veut connaitre les fieulles de façon récusive
      * @return Les noms de tous les fieulles
      */
     public List<String> getRecursiveSponsoredClient(String clientName) {
