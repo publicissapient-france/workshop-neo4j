@@ -22,15 +22,6 @@ Une fois votre requête prête vous pourrez implémenter son execution dans la m
 Documentation relative à cette partie : <http://docs.neo4j.org/chunked/stable/tutorials-cypher-java.html>
 
 
-### Parrainage
-
-Un gros bug dans le mécanisme des parrainages vient de vous arriver. Nous décidons de faire table rase et de recoder la méthode qui permet à un client de parrainer un filleul.
-
-    GraphDAO.addNewSponsoredClient
-
-Pendant la pause cigarette, Didier vous parle du mécanisme d'indexation automatique fourni par Neo4J et vous conseille la doc <http://docs.neo4j.org/chunked/milestone/auto-indexing.html>
-
-
 ### Quels sont les clients les plus influants ?
 
 C'est le cinquième anniversaire de création de la boite, et pour fêter l'évènement, votre entreprise a décidé de récompenser les clients qui ont ramené le plus de client via le parainage.
@@ -42,6 +33,16 @@ Il vous donne même un lien sur la doc : <http://docs.neo4j.org/chunked/stable/t
 	GraphDAO.getRecursiveSponsoredClient
 
 (Il est sympa quand même ce Didier ...)
+
+
+### Parrainage
+
+Un gros bug dans le mécanisme des parrainages vient de vous arriver. Nous décidons de faire table rase et de recoder la méthode qui permet à un client de parrainer un filleul.
+
+    GraphDAO.addNewSponsoredClient
+
+Pendant la pause cigarette, Didier vous parle du mécanisme d'indexation automatique fourni par Neo4J et vous conseille la doc <http://docs.neo4j.org/chunked/milestone/auto-indexing.html>
+
 
 ### Le début de la Business Intelligence (enfin)
 
