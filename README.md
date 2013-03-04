@@ -13,7 +13,7 @@ Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/r/yzqkr3>
 
 ### La recommandation de produit
 
-La première chose qui saute au yeux quand on arrive sur le site, c'est qu'il n'y pas de recommandation de produit. Aussi vous demande t-on, avant toute chose, d'implémenter une méthode permettant à partir d'un nom de produit de retrouver tous les produits qui ont été acheté dans le même panier que ce dernier. Didier votre collègue vous suggère d'utiliser les requêtes `Cypher`, directement dans la console Neo4j.
+La première chose qui saute aux yeux quand on arrive sur le site, c'est qu'il n'y a pas de recommandation de produit. Aussi vous demande-t-on, avant toute chose, d'implémenter une méthode permettant à partir d'un nom de produit de retrouver tous les produits qui ont été acheté dans le même panier que ce dernier. Didier, votre collègue, vous suggère d'utiliser les requêtes `Cypher`, directement dans la console Neo4j.
 
 Une fois votre requête prête vous pourrez implémenter son execution dans la méthode
 
@@ -24,7 +24,7 @@ Documentation relative à cette partie : <http://docs.neo4j.org/chunked/stable/t
 
 ### Quels sont les clients les plus influants ?
 
-C'est le cinquième anniversaire de création de la boite, et pour fêter l'évènement, votre entreprise a décidé de récompenser les clients qui ont ramené le plus de client via le parainage.
+C'est le cinquième anniversaire de création de la boîte, et pour fêter l'évènement, votre entreprise a décidé de récompenser les clients qui ont ramené le plus de clients via le parainage.
 On fait donc encore appel à vous pour qu'à partir d'un nom de client on puisse récupérer tous les clients qu'il a parrainé ainsi que le filleul et ce de façon récursive.
 
 En parlant de cette nouvelle tâche avec Didier au café (oui vous êtes des vrais inséparables), celui-ci vous parle des `Traverser`, un Objet de l'API Neo4j qui serait capable de parcourir facilement un graphe en fonction d'un type de relation ainsi que du sens de cette relation.
@@ -46,7 +46,7 @@ Pendant la pause cigarette, Didier vous parle du mécanisme d'indexation automat
 
 ### Le début de la Business Intelligence (enfin)
 
-Une fois tous cela terminé, on vous demande de commencer à implémenter les méthodes de Businesss intelligence à proprement parler. Nous commencerons donc par vouloir connaitre le nombre de produit vendu à une date donnée, selon une couleur et un modèle bien précis.
+Une fois tout cela terminé, on vous demande de commencer à implémenter les méthodes de Business Intelligence à proprement parler. Nous commencerons donc par vouloir connaître le nombre de produits vendus à une date donnée, selon une couleur et un modèle bien précis.
 
 	GraphDAO.getNumberOfSales
 
