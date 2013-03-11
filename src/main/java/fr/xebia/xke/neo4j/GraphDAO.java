@@ -52,12 +52,11 @@ public class GraphDAO {
 
     /**
      * @param productName Nom du produit à compter
-     * @param color       Couleur du produit à compter
      * @param date        Date à la qu'elle le produit a été acheté
-     * @return nombre de vente du produit, de cette couleur à cette date
+     * @return nombre de vente du produit à cette date
      */
 
-    public int getNumberOfSales(String productName, String color, Date date) {
+    public int getNumberOfSales(String productName, Date date) {
         return 0;
     }
 }

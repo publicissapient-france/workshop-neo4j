@@ -49,14 +49,14 @@ public class GraphDAOTest extends AbstractTest {
         Calendar cal = Calendar.getInstance();
         cal.set(2012, Calendar.JANUARY, 15);
 
-        int nbSell = graphDAO.getNumberOfSales("EscarppinsJinny", "Noir", cal.getTime());
+        int nbSell = graphDAO.getNumberOfSales("EscarppinsJinny", cal.getTime());
         assertThat(nbSell).isEqualTo(2);
 
         cal.set(2000, Calendar.JANUARY, 2);
-        nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", "Noir", cal.getTime());
+        nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", cal.getTime());
         assertThat(nbSell).isEqualTo(1);
 
-        nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", "Jaune", cal.getTime());
+        nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", cal.getTime());
         assertThat(nbSell).isEqualTo(1);
     }
 }

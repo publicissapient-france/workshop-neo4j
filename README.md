@@ -9,7 +9,7 @@ Etant un pros de la Business Intelligence, on fait appel à vous...
 Pour ce faire vous devrez implémenter diverses méthodes qui permettront d'analyser les stats enregistrées par le site dans une base de données Neo4J.
 
 Pour vous entrainer on vous met à disposition un environnement de test avec des data déjà prêtes.
-Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/r/fq3id4>
+Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/?id=daurm0>
 
 ### La recommandation de produit
 
@@ -46,7 +46,7 @@ Pendant la pause cigarette, Didier vous parle du mécanisme d'indexation automat
 
 ### Le début de la Business Intelligence (enfin)
 
-Une fois tout cela terminé, on vous demande de commencer à implémenter les méthodes de Business Intelligence à proprement parler. Nous commencerons donc par vouloir connaître le nombre de produits vendus à une date donnée, selon une couleur et un modèle bien précis.
+Une fois tout cela terminé, on vous demande de commencer à implémenter les méthodes de Business Intelligence à proprement parler. Nous commencerons donc par vouloir connaître le nombre de produits vendus à une date donnée et un modèle bien précis.
 
 	GraphDAO.getNumberOfSales
 
