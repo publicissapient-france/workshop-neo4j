@@ -99,23 +99,20 @@ public class GraphDAO {
 
     /**
      * @param productName Nom du produit à compter
-     * @param color       Couleur du produit à compter
      * @param date        Date à la qu'elle le produit a été acheté
      * @return nombre de vente du produit, de cette couleur à cette date
      */
-    public int getNumberOfSales(String productName, String color, Date date) {
+    public int getNumberOfSales(String productName, Date date) {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         String formattedDate = "Date" + DateFormatUtils.format(date, "dd_MM_yyyy");
         Map params = ImmutableMap.of("productName", productName,
-                "date", formattedDate,
-                "colorName", color);
+                "formattedDate", formattedDate);
 
-        ExecutionResult result = engine.execute("start date=node:node_auto_index(name={date}), " +
-                "product=node:node_auto_index(name={productName}), " +
-                "color=node:node_auto_index(name={colorName}) " +
-                "MATCH date<-[:DATE]-sc-[:CONTAINS]->product-[:COLOR]->color " +
-                "RETURN count(*)", params);
+        ExecutionResult result = engine.execute("start date=node:node_auto_index(name={formattedDate}), " +
+                "product=node:node_auto_index(name={productName}) " +
+                "MATCH date<-[:DATE]-shoppingCart-[:CONTAINS]->product " +
+                "RETURN count(distinct shoppingCart) as shoppingCartCount", params);
 
-        return Integer.parseInt(Iterables.getOnlyElement(result).get("count(*)").toString());
+        return Integer.parseInt(Iterables.getOnlyElement(result).get("shoppingCartCount").toString());
     }
 }
