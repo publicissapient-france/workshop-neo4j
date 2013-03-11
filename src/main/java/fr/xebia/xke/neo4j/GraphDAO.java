@@ -28,6 +28,50 @@ public class GraphDAO {
     }
 
     /**
+     * @param productName Nom du produit pour lequel on veut des recommandations
+     * @return La liste des noms de produit recommandés
+     */
+    public List<String> getRecommendedProductsFor(String productName) {
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        Map params = ImmutableMap.of("productName", productName);
+        ExecutionResult result = engine.execute("start product=node:node_auto_index(name={productName}) " +
+                "MATCH product<-[:CONTAINS]-shoppingCart-[:CONTAINS]->recommendedProducts " +
+                "WHERE not (product = recommendedProducts) " +
+                "RETURN recommendedProducts", params);
+
+        List<String> recommendedProducts = Lists.newArrayList();
+        Iterator<Node> recommendedProductsColumn = result.columnAs("recommendedProducts");
+        for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
+            recommendedProducts.add((String) node.getProperty("name"));
+        }
+        return recommendedProducts;
+
+    }
+
+    /**
+     * @param clientName Nom du client pour lequel on veut connaitre les fieulles de façon récusive
+     * @return Les noms de tous les fieulles
+     */
+    public List<String> getRecursiveSponsoredClient(String clientName) {
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        Map params = ImmutableMap.of("clientName", clientName);
+        ExecutionResult result = engine.execute("start client=node:node_auto_index(name={clientName}) RETURN client", params);
+        Node client = (Node) IteratorUtil.asIterable(result.columnAs("client")).iterator().next();
+
+        Traverser traverser = Traversal.description()
+                .depthFirst()//
+                .relationships(RelTypes.HAS_SPONSORED, Direction.OUTGOING)//
+                .evaluator(Evaluators.excludeStartPosition())//
+                .traverse(client);
+
+        List<String> sponsored = Lists.newArrayList();
+        for (Path path : traverser) {
+            sponsored.add(path.endNode().getProperty("name").toString());
+        }
+        return sponsored;
+    }
+
+    /**
      * @param existingClientName Le nom du client existant qui veut parrainer le filleul
      * @param sponsoredClientName Le nom du filleul qui est créé
      */
@@ -54,27 +98,6 @@ public class GraphDAO {
     }
 
     /**
-     * @param productName Nom du produit pour lequel on veut des recommandations
-     * @return La liste des noms de produit recommandés
-     */
-    public List<String> getRecommendedProductsFor(String productName) {
-        ExecutionEngine engine = new ExecutionEngine(graphDb);
-        Map params = ImmutableMap.of("productName", productName);
-        ExecutionResult result = engine.execute("start product=node:node_auto_index(name={productName}) " +
-                "MATCH product<-[:CONTAINS]-shoppingCart-[:CONTAINS]->recommendedProducts " +
-                "WHERE not (product = recommendedProducts) " +
-                "RETURN recommendedProducts", params);
-
-        List<String> recommendedProducts = Lists.newArrayList();
-        Iterator<Node> recommendedProductsColumn = result.columnAs("recommendedProducts");
-        for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
-            recommendedProducts.add((String) node.getProperty("name"));
-        }
-        return recommendedProducts;
-
-    }
-
-    /**
      * @param productName Nom du produit à compter
      * @param color       Couleur du produit à compter
      * @param date        Date à la qu'elle le produit a été acheté
@@ -94,28 +117,5 @@ public class GraphDAO {
                 "RETURN count(*)", params);
 
         return Integer.parseInt(Iterables.getOnlyElement(result).get("count(*)").toString());
-    }
-
-    /**
-     * @param clientName Nom du client pour lequel on veut connaitre les fieulles de façon récusive
-     * @return Les noms de tous les fieulles
-     */
-    public List<String> getRecursiveSponsoredClient(String clientName) {
-        ExecutionEngine engine = new ExecutionEngine(graphDb);
-        Map params = ImmutableMap.of("clientName", clientName);
-        ExecutionResult result = engine.execute("start client=node:node_auto_index(name={clientName}) RETURN client", params);
-        Node client = (Node) IteratorUtil.asIterable(result.columnAs("client")).iterator().next();
-
-        Traverser traverser = Traversal.description()
-                .depthFirst()//
-                .relationships(RelTypes.HAS_SPONSORED, Direction.OUTGOING)//
-                .evaluator(Evaluators.excludeStartPosition())//
-                .traverse(client);
-
-        List<String> sponsored = Lists.newArrayList();
-        for (Path path : traverser) {
-            sponsored.add(path.endNode().getProperty("name").toString());
-        }
-        return sponsored;
     }
 }
