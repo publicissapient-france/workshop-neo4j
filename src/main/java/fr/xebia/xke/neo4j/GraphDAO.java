@@ -25,6 +25,15 @@ public class GraphDAO {
     }
 
     /**
+     * @param shoppingCartName Nom du panier pour le quel on veut des produits
+     * @return La liste des noms de produit de ce panier
+     */
+    public List<String> getProductsFor(String shoppingCartName) {
+        List<String> products = Lists.newArrayList();
+        return products;
+    }
+
+    /**
      * @param productName Nom du produit pour lequel on veut des recommandations
      * @return La liste des noms de produit recommandés
      */

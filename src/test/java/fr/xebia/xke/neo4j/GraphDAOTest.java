@@ -19,6 +19,15 @@ public class GraphDAOTest extends AbstractTest {
     }
 
     @Test
+    public void givenShoppingCartName_testProductFor() {
+        List<String> result = graphDAO.getProductsFor("ShoppingCart1");
+        assertThat(result).containsOnly("SacHermes", "EscarppinsJinny");
+
+        result = graphDAO.getProductsFor("ShoppingCart2");
+        assertThat(result).containsOnly("EscarppinsJinny", "ChaussureLouboutin");
+    }
+
+    @Test
     public void givenShoppingCartName_testProductRecommendation() {
         List<String> result = graphDAO.getRecommendedProductsFor("EscarppinsJinny");
         assertThat(result).containsOnly("SacHermes", "ChaussureLouboutin");
