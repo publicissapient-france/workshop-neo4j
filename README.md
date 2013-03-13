@@ -22,10 +22,10 @@ Une fois votre requête prête vous pourrez implémenter son execution dans la m
 Documentation relative à cette partie : <http://docs.neo4j.org/chunked/stable/tutorials-cypher-java.html>
 
 
-### Quels sont les clients les plus influants ?
+### Lister les filleuls d'un client
 
 C'est le cinquième anniversaire de création de la boîte, et pour fêter l'évènement, votre entreprise a décidé de récompenser les clients qui ont ramené le plus de clients via le parainage.
-On fait donc encore appel à vous pour qu'à partir d'un nom de client on puisse récupérer tous les clients qu'il a parrainé ainsi que le filleul et ce de façon récursive.
+On fait donc encore appel à vous pour qu'à partir d'un nom de client on puisse récupérer tous les clients qu'il a parrainé et ce de façon récursive.
 
 En parlant de cette nouvelle tâche avec Didier au café (oui vous êtes des vrais inséparables), celui-ci vous parle des `Traverser`, un Objet de l'API Neo4j qui serait capable de parcourir facilement un graphe en fonction d'un type de relation ainsi que du sens de cette relation.
 Il vous donne même un lien sur la doc : <http://docs.neo4j.org/chunked/stable/tutorial-traversal-java-api.html>
