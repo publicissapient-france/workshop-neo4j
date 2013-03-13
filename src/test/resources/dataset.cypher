@@ -14,10 +14,7 @@ ShoppingCart1-[:CONTAINS]->SacHermes, ShoppingCart1-[:CONTAINS]->EscarppinsJinny
 ShoppingCart2-[:CONTAINS]->EscarppinsJinny, ShoppingCart2-[:CONTAINS]->ChaussureLouboutin,
 
 ShoppingCart3-[:CONTAINS]->SacHermes, ShoppingCart3-[:CONTAINS]->SacLouisVitton, ShoppingCart3-[:CONTAINS]->ChaussureLouboutin,
-
-SacHermes-[:COSTS]->Cher, EscarppinsJinny-[:COSTS]->PasCher,
-SacHermes-[:COLOR]->Jaune, EscarppinsJinny-[:COLOR]->Noir, SacLouisVitton-[:COLOR]->Marron,
-ChaussureLouboutin-[:COLOR]->Noir, ChaussureLouboutin-[:COLOR]->Jaune,
+ShoppingCart3-[:CONTAINS]->SacHermes, ShoppingCart3-[:CONTAINS]->SacLouisVitton, ShoppingCart3-[:CONTAINS]->ChaussureLouboutin,
 
 ShoppingCart1-[:DATE]->Date15_01_2012, ShoppingCart2-[:DATE]->Date15_01_2012, ShoppingCart3-[:DATE]->Date02_01_2000,
 ShoppingCart1-[:DAY_OF_WEEK]->Lundi, ShoppingCart2-[:DAY_OF_WEEK]->Mardi
