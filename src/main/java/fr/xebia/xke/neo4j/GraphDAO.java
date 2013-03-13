@@ -28,6 +28,25 @@ public class GraphDAO {
     }
 
     /**
+     * @param shoppingCartName Nom du panier pour lequel on veut la liste des produits
+     * @return La liste des noms de produit
+     */
+    public List<String> getProductsFor(String shoppingCartName) {
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
+        ExecutionResult result = engine.execute("start shoppingCart=node:node_auto_index(name={shoppingCartName}) " +
+                "MATCH shoppingCart-[:CONTAINS]->product " +
+                "RETURN product", params);
+
+        List<String> products = Lists.newArrayList();
+        Iterator<Node> recommendedProductsColumn = result.columnAs("product");
+        for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
+            products.add((String) node.getProperty("name"));
+        }
+        return products;
+    }
+
+    /**
      * @param productName Nom du produit pour lequel on veut des recommandations
      * @return La liste des noms de produit recommandés
      */
@@ -72,7 +91,7 @@ public class GraphDAO {
     }
 
     /**
-     * @param existingClientName Le nom du client existant qui veut parrainer le filleul
+     * @param existingClientName  Le nom du client existant qui veut parrainer le filleul
      * @param sponsoredClientName Le nom du filleul qui est créé
      */
     public void addNewSponsoredClient(String existingClientName, String sponsoredClientName) {
