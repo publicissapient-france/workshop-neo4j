@@ -11,16 +11,21 @@ Pour ce faire vous devrez implémenter diverses méthodes qui permettront d'anal
 Pour vous entrainer on vous met à disposition un environnement de test avec des data déjà prêtes.
 Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/?id=daurm0>
 
-### La recommandation de produit
+### Le contenu d'un panier
 
-La première chose qui saute aux yeux quand on arrive sur le site, c'est qu'il n'y a pas de recommandation de produit. Aussi vous demande-t-on, avant toute chose, d'implémenter une méthode permettant à partir d'un nom de produit de retrouver tous les produits qui ont été acheté dans le même panier que ce dernier. Didier, votre collègue, vous suggère d'utiliser les requêtes `Cypher`, directement dans la console Neo4j.
+Pour découvrir Neo4J, on vous demande de pouvoir lister les produits d'un panier. Didier, votre collègue, vous suggère d'utiliser les requêtes `Cypher`, directement dans la console Neo4j.
 
 Une fois votre requête prête vous pourrez implémenter son execution dans la méthode
 
-	GraphDAO.getRecommendedProductsFor
+	GraphDAO.getProductsFor
 
 Documentation relative à cette partie : <http://docs.neo4j.org/chunked/stable/tutorials-cypher-java.html>
 
+### La recommandation de produit
+
+La première chose qui saute aux yeux quand on arrive sur le site, c'est qu'il n'y a pas de recommandation de produit. Aussi vous demande-t-on, avant toute chose, d'implémenter une méthode permettant à partir d'un nom de produit de retrouver tous les produits qui ont été acheté dans le même panier que ce dernier. 
+
+	GraphDAO.getRecommendedProductsFor
 
 ### Lister les filleuls d'un client
 
