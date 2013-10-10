@@ -19,6 +19,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**********************************************
+ * Compléter chaque méthode de cette classe pour faire passer les tests
+ **********************************************/
+
 public class GraphDAO {
 
     protected GraphDatabaseService graphDb;
@@ -32,21 +36,22 @@ public class GraphDAO {
      * @return La liste des noms de produit
      */
     public List<String> getProductsFor(String shoppingCartName) {
-        ExecutionEngine engine = new ExecutionEngine(graphDb);
-        Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
-        ExecutionResult result = engine.execute("start shoppingCart=node:node_auto_index(name={shoppingCartName}) " +
-                "MATCH shoppingCart-[:CONTAINS]->product " +
-                "RETURN product", params);
+        try (Transaction tx = graphDb.beginTx()){
 
-        List<String> products = Lists.newArrayList();
-        Iterator<Node> recommendedProductsColumn = result.columnAs("product");
-        Transaction tx = graphDb.beginTx();
-        try{
-        for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
-            products.add((String) node.getProperty("name"));
-        }
-        } finally {
-            tx.close();
+            ExecutionEngine engine = new ExecutionEngine(graphDb);
+            Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
+            ExecutionResult result = engine.execute(
+                    "MATCH shoppingCart:ShoppingCart-[:CONTAINS]->product " +
+                    "WHERE shoppingCart.name={shoppingCartName} "+
+                    "RETURN product", params);
+
+            List<String> products = Lists.newArrayList();
+            Iterator<Node> recommendedProductsColumn = result.columnAs("product");
+
+            for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
+                products.add((String) node.getProperty("name"));
+            }
+            tx.success();
             return products;
         }
     }
@@ -60,7 +65,7 @@ public class GraphDAO {
         Map params = ImmutableMap.of("productName", productName);
         Transaction tx = graphDb.beginTx();
         List<String> recommendedProducts = Lists.newArrayList();
-        try{
+        try {
             ExecutionResult result = engine.execute("start product=node:node_auto_index(name={productName}) " +
                     "MATCH product<-[:CONTAINS]-shoppingCart-[:CONTAINS]->recommendedProducts " +
                     "WHERE not (product = recommendedProducts) " +
@@ -90,7 +95,7 @@ public class GraphDAO {
         List<String> sponsored = Lists.newArrayList();
 
         Transaction tx = graphDb.beginTx();
-        try{
+        try {
             Traverser traverser = Traversal.description()
                     .depthFirst()//
                     .relationships(RelTypes.HAS_SPONSORED, Direction.OUTGOING)//

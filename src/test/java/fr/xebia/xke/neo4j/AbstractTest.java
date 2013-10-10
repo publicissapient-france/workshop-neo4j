@@ -53,7 +53,7 @@ public class AbstractTest {
     @After
     public void tearDown() throws Exception {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
-        engine.execute("START n=node(*) MATCH n-[r?]-() WHERE ID(n) <> 0 DELETE n,r");
+        engine.execute("START n=node(*) MATCH n-[r?]-m  WITH n, r DELETE n, r");
         graphDb.shutdown();
     }
 }
