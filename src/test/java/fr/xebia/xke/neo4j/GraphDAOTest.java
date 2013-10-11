@@ -1,10 +1,9 @@
 package fr.xebia.xke.neo4j;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.Calendar;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 

@@ -1,9 +1,9 @@
 package fr.xebia.xke.neo4j;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import fr.xebia.xke.neo4j.relations.RelTypes;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
@@ -13,11 +13,11 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.helpers.collection.IteratorUtil;
 import org.neo4j.kernel.Traversal;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import fr.xebia.xke.neo4j.relations.RelTypes;
 
 /**********************************************
  * Compléter chaque méthode de cette classe pour faire passer les tests
@@ -38,13 +38,13 @@ public class GraphDAO {
     public List<String> getProductsFor(String shoppingCartName) {
         List<String> products = Lists.newArrayList();
 
-        try (Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             ExecutionEngine engine = new ExecutionEngine(graphDb);
             Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
             ExecutionResult result = engine.execute(
                     "MATCH shoppingCart:ShoppingCart-[:CONTAINS]->product " +
-                    "WHERE shoppingCart.name={shoppingCartName} "+
-                    "RETURN product", params);
+                            "WHERE shoppingCart.name={shoppingCartName} " +
+                            "RETURN product", params);
 
             Iterator<Node> recommendedProductsColumn = result.columnAs("product");
 
@@ -62,7 +62,7 @@ public class GraphDAO {
      */
     public List<String> getRecommendedProductsFor(String productName) {
         List<String> recommendedProducts = Lists.newArrayList();
-        try ( Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             ExecutionEngine engine = new ExecutionEngine(graphDb);
             Map params = ImmutableMap.of("productName", productName);
             ExecutionResult result = engine.execute("start product=node:node_auto_index(name={productName}) " +
@@ -87,7 +87,7 @@ public class GraphDAO {
     public List<String> getRecursiveSponsoredClient(String clientName) {
         List<String> sponsored = Lists.newArrayList();
 
-        try (Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             ExecutionEngine engine = new ExecutionEngine(graphDb);
             Map params = ImmutableMap.of("clientName", clientName);
             ExecutionResult result = engine.execute("start client=node:node_auto_index(name={clientName}) RETURN client", params);
@@ -111,8 +111,7 @@ public class GraphDAO {
      * @param sponsoredClientName Le nom du filleul qui est créé
      */
     public void addNewSponsoredClient(String existingClientName, String sponsoredClientName) {
-        Transaction tx = graphDb.beginTx();
-        try {
+        try (Transaction tx = graphDb.beginTx()) {
             ReadableIndex<Node> index = graphDb.index()
                     .getNodeAutoIndexer()
                     .getAutoIndex();
@@ -125,10 +124,6 @@ public class GraphDAO {
             clientNode.createRelationshipTo(sponsoredNode, RelTypes.HAS_SPONSORED);
 
             tx.success();
-        } catch (Exception e) {
-            tx.failure();
-        } finally {
-            tx.finish();
         }
     }
 
