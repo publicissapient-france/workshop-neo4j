@@ -44,7 +44,8 @@ public class AbstractTest {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         ExecutionResult result = engine.execute("START n=node(*) RETURN count(n)");
         int nbNodes = Integer.parseInt(result.iterator().next().get("count(n)").toString());
-        Assert.assertEquals("After initialization the database should contains 22 nodes.", 22, nbNodes);
+        int expected = 22;
+        Assert.assertEquals("After initialization the database should contains "+expected+" nodes.", expected, nbNodes);
     }
 
     @After
