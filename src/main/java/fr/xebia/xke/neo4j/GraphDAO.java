@@ -59,7 +59,6 @@ public class GraphDAO {
     /**
      * @param productName Nom du produit pour lequel on veut des recommandations
      * @return La liste des noms de produit recommandés
-     * not 
      */
     public List<String> getRecommendedProductsFor(String productName) {
         List<String> recommendedProducts = Lists.newArrayList();
@@ -68,7 +67,7 @@ public class GraphDAO {
             Map params = ImmutableMap.of("productName", productName);
             ExecutionResult result = engine.execute(
                     "MATCH product:Product<-[:CONTAINS]-shoppingCart:ShoppingCart-[:CONTAINS]->recommendedProducts:Product " +
-                    "WHERE product.name = {productName} AND not product = recommendedProducts " +
+                    "WHERE product.name = {productName} AND product <> recommendedProducts " +
                     "RETURN recommendedProducts", params);
 
             Iterator<Node> recommendedProductsColumn = result.columnAs("recommendedProducts");
