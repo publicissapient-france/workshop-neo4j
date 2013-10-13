@@ -36,7 +36,7 @@ public class GraphDAO {
      * @return La liste des noms de produit
      */
     public List<String> getProductsFor(String shoppingCartName) {
-        List<String> products = Lists.newArrayList();
+        List<String> products;
 
         try (Transaction tx = graphDb.beginTx()) {
             ExecutionEngine engine = new ExecutionEngine(graphDb);
@@ -44,13 +44,10 @@ public class GraphDAO {
             ExecutionResult result = engine.execute(
                     "MATCH shoppingCart:ShoppingCart-[:CONTAINS]->product " +
                             "WHERE shoppingCart.name={shoppingCartName} " +
-                            "RETURN product", params);
+                            "RETURN product.name as productName", params);
 
-            Iterator<Node> recommendedProductsColumn = result.columnAs("product");
+            products = Lists.newArrayList(result.<String>columnAs("productName"));
 
-            for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
-                products.add((String) node.getProperty("name"));
-            }
             tx.success();
         }
         return products;
@@ -61,19 +58,17 @@ public class GraphDAO {
      * @return La liste des noms de produit recommandés
      */
     public List<String> getRecommendedProductsFor(String productName) {
-        List<String> recommendedProducts = Lists.newArrayList();
+        List<String> recommendedProducts;
         try (Transaction tx = graphDb.beginTx()) {
             ExecutionEngine engine = new ExecutionEngine(graphDb);
             Map params = ImmutableMap.of("productName", productName);
             ExecutionResult result = engine.execute(
                     "MATCH product:Product<-[:CONTAINS]-shoppingCart:ShoppingCart-[:CONTAINS]->recommendedProducts:Product " +
                     "WHERE product.name = {productName} AND product <> recommendedProducts " +
-                    "RETURN recommendedProducts", params);
+                    "RETURN recommendedProducts.name as recommendedProductsName", params);
 
-            Iterator<Node> recommendedProductsColumn = result.columnAs("recommendedProducts");
-            for (Node node : IteratorUtil.asIterable(recommendedProductsColumn)) {
-                recommendedProducts.add((String) node.getProperty("name"));
-            }
+            recommendedProducts = Lists.newArrayList(result.<String>columnAs("recommendedProductsName"));
+
             tx.success();
 
         }
@@ -81,8 +76,8 @@ public class GraphDAO {
     }
 
     /**
-     * @param clientName Nom du client pour lequel on veut connaitre les fieulles de façon récusive
-     * @return Les noms de tous les fieulles
+     * @param clientName Nom du client pour lequel on veut connaitre les filleuls de façon récursive
+     * @return Les noms de tous les filleuls
      */
     public List<String> getRecursiveSponsoredClient(String clientName) {
         List<String> sponsored = Lists.newArrayList();
