@@ -9,7 +9,7 @@ Nous sommes une boutique de e-commerce fleurissante, et afin de mieux cerner not
 Pour ce faire, vous devrez implémenter diverses méthodes qui permettront d'analyser les stats enregistrées par le site dans une base de données Neo4j.
 
 Pour vous entrainer, on vous met à disposition un environnement de test avec des données déjà prêtes.
-Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/?id=daurm0>
+Vous pouvez d'ailleurs visualiser le graphe <http://console.neo4j.org/?id=n4ob2g>
 
 ### Le contenu d'un panier
 
