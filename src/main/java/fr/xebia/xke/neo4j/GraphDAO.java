@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import fr.xebia.xke.neo4j.relations.RelTypes;
 
 /**********************************************
- * Compléter chaque méthode de cette classe pour faire passer les tests
+ * Complete each method of this class in order to pass the tests
  **********************************************/
 
 public class GraphDAO {
@@ -32,8 +32,8 @@ public class GraphDAO {
     }
 
     /**
-     * @param shoppingCartName Nom du panier pour lequel on veut la liste des produits
-     * @return La liste des noms de produit
+     * @param shoppingCartName The name of the shopping cart which products you want
+     * @return Products names
      */
     public List<String> getProductsFor(String shoppingCartName) {
         List<String> products;
@@ -54,8 +54,8 @@ public class GraphDAO {
     }
 
     /**
-     * @param productName Nom du produit pour lequel on veut des recommandations
-     * @return La liste des noms de produit recommandés
+     * @param productName The name of the products for which you want recommendations
+     * @return The names of the recommended products
      */
     public List<String> getRecommendedProductsFor(String productName) {
         List<String> recommendedProducts;
@@ -76,8 +76,8 @@ public class GraphDAO {
     }
 
     /**
-     * @param clientName Nom du client pour lequel on veut connaitre les filleuls de façon récursive
-     * @return Les noms de tous les filleuls
+     * @param clientName The names of the client for whom you want to know the sponsored clients recursively
+     * @return Names of the sponsored clients
      */
     public List<String> getRecursiveSponsoredClient(String clientName) {
         List<String> sponsored = Lists.newArrayList();
@@ -102,8 +102,8 @@ public class GraphDAO {
     }
 
     /**
-     * @param existingClientName  Le nom du client existant qui veut parrainer le filleul
-     * @param sponsoredClientName Le nom du filleul qui est créé
+     * @param existingClientName  The name of the client who wants to sponsor the new one
+     * @param sponsoredClientName The name of the new sponsored client
      */
     public void addNewSponsoredClient(String existingClientName, String sponsoredClientName) {
         try (Transaction tx = graphDb.beginTx()) {
@@ -123,9 +123,9 @@ public class GraphDAO {
     }
 
     /**
-     * @param productName Nom du produit à compter
-     * @param date        Date à la qu'elle le produit a été acheté
-     * @return nombre de vente du produit, de cette couleur à cette date
+     * @param productName The name of the product for which we wantes the number of sales
+     * @param date        The sales date
+     * @return The number of product sales
      */
     public int getNumberOfSales(String productName, Date date) {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
