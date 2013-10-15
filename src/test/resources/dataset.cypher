@@ -4,21 +4,12 @@ create
     (SacLouisVitton:Product{name:'SacLouisVitton'}),
     (ChaussureLouboutin:Product{name:'ChaussureLouboutin'}),
     
-    (Cher{name:'Cher'}),
-    (PasCher{name:'PasCher'}),
-
-    (Jaune{name:'Jaune'}),
-    (Noir{name:'Noir'}),
-    (Marron{name:'Marron'}),
-    
     (ShoppingCart1:ShoppingCart{name:'ShoppingCart1'}),
     (ShoppingCart2:ShoppingCart{name:'ShoppingCart2'}),
     (ShoppingCart3:ShoppingCart{name:'ShoppingCart3'}),
 
-    (Date15_01_2012{name:'Date15_01_2012'}),
-    (Date02_01_2000{name:'Date02_01_2000'}),
-
-    (Lundi{name:'Lundi'}),
+    (Date15_01_2012:Date{name:'Date15_01_2012'}),
+    (Date02_01_2000:Date{name:'Date02_01_2000'}),
 
     (Client1:Client{name:'client1'}),
     (Client2:Client{name:'client2'}),
@@ -45,9 +36,12 @@ create
     (ShoppingCart3-[:CONTAINS]->SacHermes),
     (ShoppingCart3-[:CONTAINS]->SacLouisVitton),
     (ShoppingCart3-[:CONTAINS]->ChaussureLouboutin),
-    
+
     (ShoppingCart1-[:DATE]->Date15_01_2012),
     (ShoppingCart2-[:DATE]->Date15_01_2012),
     (ShoppingCart3-[:DATE]->Date02_01_2000),
     (ShoppingCart1-[:DAY_OF_WEEK]->Lundi),
-    (ShoppingCart2-[:DAY_OF_WEEK]->Mardi)
+    (ShoppingCart2-[:DAY_OF_WEEK]->Mardi);
+
+create index on :Client(name);
+create index on :ShoppingCart(name);
