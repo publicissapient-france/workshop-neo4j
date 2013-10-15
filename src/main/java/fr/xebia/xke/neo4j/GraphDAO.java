@@ -136,49 +136,4 @@ public class GraphDAO {
 
         return Integer.parseInt(Iterables.getOnlyElement(result).get("shoppingCartCount").toString());
     }
-
-    /**
-     * @param existingClientName  Le nom du client existant qui veut parrainer le filleul
-     * @param sponsoredClientName Le nom du filleul qui est créé
-     */
-    public void addNewSponsoredClient(String existingClientName, String sponsoredClientName) {
-        Transaction tx = graphDb.beginTx();
-        try {
-            ReadableIndex<Node> index = graphDb.index()
-                    .getNodeAutoIndexer()
-                    .getAutoIndex();
-
-            Node clientNode = index.get("name", existingClientName).getSingle();
-
-            Node sponsoredNode = graphDb.createNode();
-            sponsoredNode.setProperty("name", sponsoredClientName);
-
-            clientNode.createRelationshipTo(sponsoredNode, RelTypes.HAS_SPONSORED);
-
-            tx.success();
-        } catch (Exception e) {
-            tx.failure();
-        } finally {
-            tx.finish();
-        }
-    }
-
-    /**
-     * @param productName Nom du produit à compter
-     * @param date        Date à la qu'elle le produit a été acheté
-     * @return nombre de vente du produit, de cette couleur à cette date
-     */
-    public int getNumberOfSales(String productName, Date date) {
-        ExecutionEngine engine = new ExecutionEngine(graphDb);
-        String formattedDate = "Date" + DateFormatUtils.format(date, "dd_MM_yyyy");
-        Map params = ImmutableMap.of("productName", productName,
-                "formattedDate", formattedDate);
-
-        ExecutionResult result = engine.execute("start date=node:node_auto_index(name={formattedDate}), " +
-                "product=node:node_auto_index(name={productName}) " +
-                "MATCH date<-[:DATE]-shoppingCart-[:CONTAINS]->product " +
-                "RETURN count(distinct shoppingCart) as shoppingCartCount", params);
-
-        return Integer.parseInt(Iterables.getOnlyElement(result).get("shoppingCartCount").toString());
-    }
 }
