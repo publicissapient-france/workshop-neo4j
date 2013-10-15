@@ -1,22 +1,20 @@
 package fr.xebia.xke.neo4j;
 
-import junit.framework.Assert;
+import java.io.InputStream;
+import java.util.Scanner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.factory.GraphDatabaseSettings;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
-import java.io.InputStream;
-import java.util.Scanner;
+import junit.framework.Assert;
 
 
 public class AbstractTest {
 
-    public static final String DB_PATH = "neo4jDb-test";
     private static final String DATASET_PATH = "/dataset.cypher";
     private static final String NEO4J_CONF_PATH = "/neo4j.properties";
 
@@ -25,21 +23,24 @@ public class AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-         graphDb = new TestGraphDatabaseFactory()//
-                        .newImpermanentDatabaseBuilder()//
-                        //.newEmbeddedDatabaseBuilder(DB_PATH)//
-                        .loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())
-                        .newGraphDatabase();
+        graphDb = new TestGraphDatabaseFactory()//
+                .newImpermanentDatabaseBuilder()//
+                .loadPropertiesFromFile(getClass().getResource(NEO4J_CONF_PATH).getPath())
+                .newGraphDatabase();
 
 
         InputStream is = getClass().getResourceAsStream(DATASET_PATH);
         Scanner scanner = new Scanner(is);
-        StringBuffer dataSetQuery = new StringBuffer();
-        while(scanner.hasNextLine()){
+        StringBuilder dataSetQuery = new StringBuilder();
+        while (scanner.hasNextLine()) {
             dataSetQuery.append(scanner.nextLine());
         }
-        ExecutionEngine engine = new ExecutionEngine( graphDb );
-        ExecutionResult result = engine.execute(dataSetQuery.toString());
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+
+        String[] queries = dataSetQuery.toString().split(";");
+        for (String query : queries){
+            engine.execute(query);
+        }
     }
 
     @Test
@@ -47,13 +48,14 @@ public class AbstractTest {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         ExecutionResult result = engine.execute("START n=node(*) RETURN count(n)");
         int nbNodes = Integer.parseInt(result.iterator().next().get("count(n)").toString());
-        Assert.assertEquals("After initialization the database should contains 22 nodes.", 22, nbNodes);
+        int expected = 15;
+        Assert.assertEquals("After initialization the database should contains "+expected+" nodes.", expected, nbNodes);
     }
 
     @After
     public void tearDown() throws Exception {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
-        engine.execute("START n=node(*) MATCH n-[r?]-() WHERE ID(n) <> 0 DELETE n,r");
+        engine.execute("START n=node(*) MATCH n-[r?]-m  WITH n, r DELETE n, r");
         graphDb.shutdown();
     }
 }

@@ -1,10 +1,9 @@
 package fr.xebia.xke.neo4j;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.Calendar;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -46,6 +45,14 @@ public class GraphDAOTest extends AbstractTest {
     }
 
     @Test
+    public void givenClientName_testAddSponsoredClient() {
+        graphDAO.addNewSponsoredClient("client5", "client6");
+
+        List<String> sponsored = graphDAO.getRecursiveSponsoredClient("client5");
+        assertThat(sponsored).containsOnly("client6");
+    }
+
+    @Test
     public void givenDateProductNameAndColor_testNbSales() {
         Calendar cal = Calendar.getInstance();
         cal.set(2012, Calendar.JANUARY, 15);
@@ -59,13 +66,5 @@ public class GraphDAOTest extends AbstractTest {
 
         nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", cal.getTime());
         assertThat(nbSell).isEqualTo(1);
-    }
-
-    @Test
-    public void givenClientName_testAddNewSponsoredClient() {
-        graphDAO.addNewSponsoredClient("client5", "client6");
-
-        List<String> sponsored = graphDAO.getRecursiveSponsoredClient("client5");
-        assertThat(sponsored).containsOnly("client6");
     }
 }
