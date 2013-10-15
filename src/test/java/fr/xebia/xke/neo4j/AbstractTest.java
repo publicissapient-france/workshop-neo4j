@@ -36,7 +36,11 @@ public class AbstractTest {
             dataSetQuery.append(scanner.nextLine());
         }
         ExecutionEngine engine = new ExecutionEngine(graphDb);
-        engine.execute(dataSetQuery.toString());
+
+        String[] queries = dataSetQuery.toString().split(";");
+        for (String query : queries){
+            engine.execute(query);
+        }
     }
 
     @Test

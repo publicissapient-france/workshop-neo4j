@@ -87,7 +87,7 @@ public class GraphDAO {
             Map params = ImmutableMap.of("clientName", clientName);
             ExecutionResult result = engine.execute("start client=node:node_auto_index(name={clientName}) RETURN client", params);
             Node client = (Node) IteratorUtil.asIterable(result.columnAs("client")).iterator().next();
-            Traverser traverser = Traversal.description()
+            Traverser traverser = graphDb.traversalDescription()
                     .depthFirst()//
                     .relationships(RelTypes.HAS_SPONSORED, Direction.OUTGOING)//
                     .evaluator(Evaluators.excludeStartPosition())//
