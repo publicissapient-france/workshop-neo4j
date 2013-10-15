@@ -19,7 +19,13 @@ Une fois votre requête prête, vous pourrez implémenter son execution dans la 
 
 	GraphDAO.getProductsFor
 
-Documentation relative à cette partie : <http://docs.neo4j.org/chunked/stable/tutorials-cypher-java.html>
+Documentation relative à cette partie : <http://docs.neo4j.org/chunked/milestone/tutorials-cypher-java.html>
+
+Quick reference card : <http://docs.neo4j.org/refcard/2.0/>
+
+Informations complémentaires : Dans cette partie, vous aurez besoin de :
+* ExecutionEngine.columnAs() (prend en paramètre le nom du résultat que vous avez retourné dans la requête cypher)
+* Lists.newArrayList() (pour la conversion d'un itérable en liste) [javadoc](http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/collect/Lists.html#newArrayList%28java.lang.Iterable%29)
 
 ### La recommandation de produit
 
@@ -33,7 +39,9 @@ C'est le cinquième anniversaire de création de la boîte, et pour fêter l'év
 On fait donc encore appel à vous pour qu'à partir d'un nom de client, on puisse récupérer tous les clients qu'il a parrainés et ce de façon récursive.
 
 En parlant de cette nouvelle tâche avec Didier au café (oui vous êtes des vrais inséparables), celui-ci vous parle des `Traverser`, un Objet de l'API Neo4j qui serait capable de parcourir facilement un graphe en fonction d'un type de relation ainsi que du sens de cette relation.
-Il vous donne même un lien sur la doc : <http://docs.neo4j.org/chunked/stable/tutorial-traversal-java-api.html>
+Il vous donne même un lien sur la doc : <http://docs.neo4j.org/chunked/milestone/tutorial-traversal-java-api.html>
+
+La Doc n'étant pas très à jour, Didier vous invite à remplacer les méthodes statiques dépréciées de Traversal par celles de GraphDatabaseService.
 
 	GraphDAO.getRecursiveSponsoredClient
 
@@ -55,7 +63,7 @@ Une fois tout cela terminé, on vous demande de commencer à implémenter les m�
 
 	GraphDAO.getNumberOfSales
 
-La bible `Cypher` que vous avez sur votre table de nuit : <http://docs.neo4j.org/chunked/stable/cypher-query-lang.html>
+La bible `Cypher` que vous avez sur votre table de nuit : <http://docs.neo4j.org/chunked/milestone/cypher-query-lang.html>
 
 
 
