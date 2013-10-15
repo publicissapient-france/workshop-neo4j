@@ -1,9 +1,9 @@
 package fr.xebia.xke.neo4j;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import fr.xebia.xke.neo4j.relations.RelTypes;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
@@ -11,17 +11,16 @@ import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.index.ReadableIndex;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.Traverser;
-import org.neo4j.helpers.collection.IteratorUtil;
-import org.neo4j.kernel.Traversal;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
-import fr.xebia.xke.neo4j.relations.RelTypes;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-/**********************************************
+/**
+ * *******************************************
  * Complete each method of this class in order to pass the tests
- **********************************************/
+ * ********************************************
+ */
 
 public class GraphDAO {
 
@@ -43,8 +42,8 @@ public class GraphDAO {
             Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
             ExecutionResult result = engine.execute(
                     "MATCH (shoppingCart:ShoppingCart)-[:CONTAINS]->product " +
-                    "WHERE shoppingCart.name={shoppingCartName} " +
-                    "RETURN product.name as productName", params);
+                            "WHERE shoppingCart.name={shoppingCartName} " +
+                            "RETURN product.name as productName", params);
 
             products = Lists.newArrayList(result.<String>columnAs("productName"));
 
@@ -64,8 +63,8 @@ public class GraphDAO {
             Map params = ImmutableMap.of("productName", productName);
             ExecutionResult result = engine.execute(
                     "MATCH (product:Product)<-[:CONTAINS]-(shoppingCart:ShoppingCart)-[:CONTAINS]->(recommendedProducts:Product) " +
-                    "WHERE product.name = {productName} AND product <> recommendedProducts " +
-                    "RETURN recommendedProducts.name as recommendedProductsName", params);
+                            "WHERE product.name = {productName} AND product <> recommendedProducts " +
+                            "RETURN recommendedProducts.name as recommendedProductsName", params);
 
             recommendedProducts = Lists.newArrayList(result.<String>columnAs("recommendedProductsName"));
 
@@ -83,10 +82,8 @@ public class GraphDAO {
         List<String> sponsored = Lists.newArrayList();
 
         try (Transaction tx = graphDb.beginTx()) {
-            ExecutionEngine engine = new ExecutionEngine(graphDb);
-            Map params = ImmutableMap.of("clientName", clientName);
-            ExecutionResult result = engine.execute("start client=node:node_auto_index(name={clientName}) RETURN client", params);
-            Node client = (Node) IteratorUtil.asIterable(result.columnAs("client")).iterator().next();
+            ResourceIterable<Node> nodes = graphDb.findNodesByLabelAndProperty(DynamicLabel.label("Client"), "name", clientName);
+            Node client = Iterables.getOnlyElement(nodes);
             Traverser traverser = graphDb.traversalDescription()
                     .depthFirst()//
                     .relationships(RelTypes.HAS_SPONSORED, Direction.OUTGOING)//
@@ -130,13 +127,12 @@ public class GraphDAO {
     public int getNumberOfSales(String productName, Date date) {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         String formattedDate = "Date" + DateFormatUtils.format(date, "dd_MM_yyyy");
-        Map params = ImmutableMap.of("productName", productName,
-                "formattedDate", formattedDate);
+        Map params = ImmutableMap.of("productName", productName, "formattedDate", formattedDate);
 
         ExecutionResult result = engine.execute(
                 "MATCH (date:Date)<-[:DATE]-shoppingCart-[:CONTAINS]->(product:Product) " +
-                "WHERE date.name={formattedDate} AND product.name={productName}" +
-                "RETURN count(distinct shoppingCart) as shoppingCartCount", params);
+                        "WHERE date.name={formattedDate} AND product.name={productName}" +
+                        "RETURN count(distinct shoppingCart) as shoppingCartCount", params);
 
         return Integer.parseInt(Iterables.getOnlyElement(result).get("shoppingCartCount").toString());
     }
