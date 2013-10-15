@@ -33,15 +33,10 @@ create
     (ShoppingCart3-[:CONTAINS]->SacHermes),
     (ShoppingCart3-[:CONTAINS]->SacLouisVitton),
     (ShoppingCart3-[:CONTAINS]->ChaussureLouboutin),
-    (ShoppingCart3-[:CONTAINS]->SacHermes),
-    (ShoppingCart3-[:CONTAINS]->SacLouisVitton),
-    (ShoppingCart3-[:CONTAINS]->ChaussureLouboutin),
 
     (ShoppingCart1-[:DATE]->Date15_01_2012),
     (ShoppingCart2-[:DATE]->Date15_01_2012),
-    (ShoppingCart3-[:DATE]->Date02_01_2000),
-    (ShoppingCart1-[:DAY_OF_WEEK]->Lundi),
-    (ShoppingCart2-[:DAY_OF_WEEK]->Mardi);
+    (ShoppingCart3-[:DATE]->Date02_01_2000);
 
 create index on :Client(name);
 create index on :ShoppingCart(name);
