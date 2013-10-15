@@ -133,9 +133,9 @@ public class GraphDAO {
         Map params = ImmutableMap.of("productName", productName,
                 "formattedDate", formattedDate);
 
-        ExecutionResult result = engine.execute("start date=node:node_auto_index(name={formattedDate}), " +
-                "product=node:node_auto_index(name={productName}) " +
-                "MATCH date<-[:DATE]-shoppingCart-[:CONTAINS]->product " +
+        ExecutionResult result = engine.execute(
+                "MATCH (date:Date)<-[:DATE]-shoppingCart-[:CONTAINS]->(product:Product) " +
+                "WHERE date.name={formattedDate} AND product.name={productName}" +
                 "RETURN count(distinct shoppingCart) as shoppingCartCount", params);
 
         return Integer.parseInt(Iterables.getOnlyElement(result).get("shoppingCartCount").toString());
