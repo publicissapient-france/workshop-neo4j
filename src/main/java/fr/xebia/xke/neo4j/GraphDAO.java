@@ -42,9 +42,9 @@ public class GraphDAO {
             ExecutionEngine engine = new ExecutionEngine(graphDb);
             Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
             ExecutionResult result = engine.execute(
-                    "MATCH shoppingCart:ShoppingCart-[:CONTAINS]->product " +
-                            "WHERE shoppingCart.name={shoppingCartName} " +
-                            "RETURN product.name as productName", params);
+                    "MATCH (shoppingCart:ShoppingCart)-[:CONTAINS]->product " +
+                    "WHERE shoppingCart.name={shoppingCartName} " +
+                    "RETURN product.name as productName", params);
 
             products = Lists.newArrayList(result.<String>columnAs("productName"));
 
@@ -63,7 +63,7 @@ public class GraphDAO {
             ExecutionEngine engine = new ExecutionEngine(graphDb);
             Map params = ImmutableMap.of("productName", productName);
             ExecutionResult result = engine.execute(
-                    "MATCH product:Product<-[:CONTAINS]-shoppingCart:ShoppingCart-[:CONTAINS]->recommendedProducts:Product " +
+                    "MATCH (product:Product)<-[:CONTAINS]-(shoppingCart:ShoppingCart)-[:CONTAINS]->(recommendedProducts:Product) " +
                     "WHERE product.name = {productName} AND product <> recommendedProducts " +
                     "RETURN recommendedProducts.name as recommendedProductsName", params);
 

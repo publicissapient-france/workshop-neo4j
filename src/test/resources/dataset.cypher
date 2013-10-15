@@ -6,6 +6,7 @@ create
     
     (Cher{name:'Cher'}),
     (PasCher{name:'PasCher'}),
+
     (Jaune{name:'Jaune'}),
     (Noir{name:'Noir'}),
     (Marron{name:'Marron'}),
@@ -13,9 +14,12 @@ create
     (ShoppingCart1:ShoppingCart{name:'ShoppingCart1'}),
     (ShoppingCart2:ShoppingCart{name:'ShoppingCart2'}),
     (ShoppingCart3:ShoppingCart{name:'ShoppingCart3'}),
+
     (Date15_01_2012{name:'Date15_01_2012'}),
     (Date02_01_2000{name:'Date02_01_2000'}),
+
     (Lundi{name:'Lundi'}),
+
     (Client1:Client{name:'client1'}),
     (Client2:Client{name:'client2'}),
     (Client3:Client{name:'client3'}),
