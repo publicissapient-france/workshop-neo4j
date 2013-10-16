@@ -57,7 +57,7 @@ public class GraphDAO {
         Map params = ImmutableMap.of("productName", productName);
         ExecutionResult result = engine.execute(
                 "MATCH (product:Product)<-[:CONTAINS]-(shoppingCart:ShoppingCart)-[:CONTAINS]->(recommendedProducts:Product) " +
-                        "WHERE product.name = {productName} AND product <> recommendedProducts " +
+                        "WHERE product.name = {productName}" +
                         "RETURN recommendedProducts.name as recommendedProductsName", params);
         recommendedProducts = Lists.newArrayList(result.<String>columnAs("recommendedProductsName"));
         return recommendedProducts;
