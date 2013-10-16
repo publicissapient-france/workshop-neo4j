@@ -36,19 +36,14 @@ public class GraphDAO {
      */
     public List<String> getProductsFor(String shoppingCartName) {
         List<String> products;
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
+        ExecutionResult result = engine.execute(
+                "MATCH (shoppingCart:ShoppingCart)-[:CONTAINS]->product " +
+                        "WHERE shoppingCart.name={shoppingCartName} " +
+                        "RETURN product.name as productName", params);
 
-        try (Transaction tx = graphDb.beginTx()) {
-            ExecutionEngine engine = new ExecutionEngine(graphDb);
-            Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
-            ExecutionResult result = engine.execute(
-                    "MATCH (shoppingCart:ShoppingCart)-[:CONTAINS]->product " +
-                            "WHERE shoppingCart.name={shoppingCartName} " +
-                            "RETURN product.name as productName", params);
-
-            products = Lists.newArrayList(result.<String>columnAs("productName"));
-
-            tx.success();
-        }
+        products = Lists.newArrayList(result.<String>columnAs("productName"));
         return products;
     }
 
@@ -58,19 +53,13 @@ public class GraphDAO {
      */
     public List<String> getRecommendedProductsFor(String productName) {
         List<String> recommendedProducts;
-        try (Transaction tx = graphDb.beginTx()) {
-            ExecutionEngine engine = new ExecutionEngine(graphDb);
-            Map params = ImmutableMap.of("productName", productName);
-            ExecutionResult result = engine.execute(
-                    "MATCH (product:Product)<-[:CONTAINS]-(shoppingCart:ShoppingCart)-[:CONTAINS]->(recommendedProducts:Product) " +
-                            "WHERE product.name = {productName} AND product <> recommendedProducts " +
-                            "RETURN recommendedProducts.name as recommendedProductsName", params);
-
-            recommendedProducts = Lists.newArrayList(result.<String>columnAs("recommendedProductsName"));
-
-            tx.success();
-
-        }
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        Map params = ImmutableMap.of("productName", productName);
+        ExecutionResult result = engine.execute(
+                "MATCH (product:Product)<-[:CONTAINS]-(shoppingCart:ShoppingCart)-[:CONTAINS]->(recommendedProducts:Product) " +
+                        "WHERE product.name = {productName} AND product <> recommendedProducts " +
+                        "RETURN recommendedProducts.name as recommendedProductsName", params);
+        recommendedProducts = Lists.newArrayList(result.<String>columnAs("recommendedProductsName"));
         return recommendedProducts;
     }
 
