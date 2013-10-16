@@ -1,20 +1,10 @@
 package fr.xebia.xke.neo4j;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import fr.xebia.xke.neo4j.relations.RelTypes;
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
-import org.neo4j.graphdb.*;
-import org.neo4j.graphdb.index.ReadableIndex;
-import org.neo4j.graphdb.traversal.Evaluators;
-import org.neo4j.graphdb.traversal.Traverser;
+import org.neo4j.graphdb.GraphDatabaseService;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * *******************************************
@@ -31,98 +21,55 @@ public class GraphDAO {
     }
 
     /**
+     * Make pass the test givenShoppingCartName_testProductFor
      * @param shoppingCartName The name of the shopping cart which products you want
      * @return Products names
      */
     public List<String> getProductsFor(String shoppingCartName) {
-        List<String> products;
-        ExecutionEngine engine = new ExecutionEngine(graphDb);
-        Map params = ImmutableMap.of("shoppingCartName", shoppingCartName);
-        ExecutionResult result = engine.execute(
-                "MATCH (shoppingCart:ShoppingCart)-[:CONTAINS]->product " +
-                        "WHERE shoppingCart.name={shoppingCartName} " +
-                        "RETURN product.name as productName", params);
-
-        products = Lists.newArrayList(result.<String>columnAs("productName"));
+        List<String> products = Lists.newArrayList();
+        // Your implementation goes here
         return products;
     }
 
     /**
+     * Make pass the test givenShoppingCartName_testProductRecommendation
      * @param productName The name of the products for which you want recommendations
      * @return The names of the recommended products
      */
     public List<String> getRecommendedProductsFor(String productName) {
-        List<String> recommendedProducts;
-        ExecutionEngine engine = new ExecutionEngine(graphDb);
-        Map params = ImmutableMap.of("productName", productName);
-        ExecutionResult result = engine.execute(
-                "MATCH (product:Product)<-[:CONTAINS]-(shoppingCart:ShoppingCart)-[:CONTAINS]->(recommendedProducts:Product) " +
-                        "WHERE product.name = {productName}" +
-                        "RETURN recommendedProducts.name as recommendedProductsName", params);
-        recommendedProducts = Lists.newArrayList(result.<String>columnAs("recommendedProductsName"));
+        List<String> recommendedProducts = Lists.newArrayList();
+        // Your implementation goes here
         return recommendedProducts;
     }
 
     /**
+     * Make pass the test givenClientName_testSponsored
      * @param clientName The names of the client for whom you want to know the sponsored clients recursively
      * @return Names of the sponsored clients
      */
     public List<String> getRecursiveSponsoredClient(String clientName) {
         List<String> sponsored = Lists.newArrayList();
-
-        try (Transaction tx = graphDb.beginTx()) {
-            ResourceIterable<Node> nodes = graphDb.findNodesByLabelAndProperty(DynamicLabel.label("Client"), "name", clientName);
-            Node client = Iterables.getOnlyElement(nodes);
-            Traverser traverser = graphDb.traversalDescription()
-                    .depthFirst()//
-                    .relationships(RelTypes.HAS_SPONSORED, Direction.OUTGOING)//
-                    .evaluator(Evaluators.excludeStartPosition())//
-                    .traverse(client);
-
-            for (Path path : traverser) {
-                sponsored.add(path.endNode().getProperty("name").toString());
-            }
-            tx.success();
-        }
+        // Your implementation goes here
         return sponsored;
     }
 
     /**
+     * Make pass the test givenClientName_testAddSponsoredClient
      * @param existingClientName  The name of the client who wants to sponsor the new one
      * @param sponsoredClientName The name of the new sponsored client
      */
     public void addNewSponsoredClient(String existingClientName, String sponsoredClientName) {
-        try (Transaction tx = graphDb.beginTx()) {
-            ReadableIndex<Node> index = graphDb.index()
-                    .getNodeAutoIndexer()
-                    .getAutoIndex();
-
-            Node clientNode = index.get("name", existingClientName).getSingle();
-
-            Node sponsoredNode = graphDb.createNode();
-            sponsoredNode.setProperty("name", sponsoredClientName);
-
-            clientNode.createRelationshipTo(sponsoredNode, RelTypes.HAS_SPONSORED);
-
-            tx.success();
-        }
+        // Your implementation goes here
     }
 
     /**
+     * Make pass the test givenDateProductNameAndColor_testNbSales
      * @param productName The name of the product for which we wantes the number of sales
      * @param date        The sales date
      * @return The number of product sales
      */
     public int getNumberOfSales(String productName, Date date) {
-        ExecutionEngine engine = new ExecutionEngine(graphDb);
-        String formattedDate = "Date" + DateFormatUtils.format(date, "dd_MM_yyyy");
-        Map params = ImmutableMap.of("productName", productName, "formattedDate", formattedDate);
-
-        ExecutionResult result = engine.execute(
-                "MATCH (date:Date)<-[:DATE]-shoppingCart-[:CONTAINS]->(product:Product) " +
-                        "WHERE date.name={formattedDate} AND product.name={productName}" +
-                        "RETURN count(distinct shoppingCart) as shoppingCartCount", params);
-
-        return Integer.parseInt(Iterables.getOnlyElement(result).get("shoppingCartCount").toString());
+        // Your implementation goes here
+        return 0;
     }
 }
