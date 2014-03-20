@@ -48,14 +48,14 @@ public class AbstractTest {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
         ExecutionResult result = engine.execute("START n=node(*) RETURN count(n)");
         int nbNodes = Integer.parseInt(result.iterator().next().get("count(n)").toString());
-        int expected = 15;
+        int expected = 19;
         Assert.assertEquals("After initialization the database should contains "+expected+" nodes.", expected, nbNodes);
     }
 
     @After
     public void tearDown() throws Exception {
         ExecutionEngine engine = new ExecutionEngine(graphDb);
-        engine.execute("START n=node(*) MATCH n-[r?]-m  WITH n, r DELETE n, r");
+        engine.execute("START n=node(*) OPTIONAL MATCH n-[r]-m  WITH n, r DELETE n, r");
         graphDb.shutdown();
     }
 }

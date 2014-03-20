@@ -72,4 +72,14 @@ public class GraphDAO {
         // Your implementation goes here
         return 0;
     }
+
+    /**
+     * @param productName The name of the product for which we want the fasted way to buy it
+     * @return The list of categories than we must cross to see the product
+     */
+    public List<String> getTheShortestPathToBuy(String productName) {
+        List<List<String>> paths = Lists.newArrayList();
+        // Your implementation goes here
+        return paths.get(0);
+    }
 }

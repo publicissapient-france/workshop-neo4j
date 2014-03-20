@@ -66,4 +66,11 @@ Une fois tout cela terminé, on vous demande de commencer à implémenter les m�
 La bible `Cypher` que vous avez sur votre table de nuit : <http://docs.neo4j.org/chunked/milestone/cypher-query-lang.html>
 
 
+### Optimisation du parcours client
 
+On cherche à optimiser la vente de produit, et pour ce faire on voudrait réduire au maximum le parcours client. Les produits peuvent en effet être classés dans différentes catégories qu'y s'incluent elles mêmes.
+On aimerais donc déjà connaitre le parcours client le plus cours de certain produit.
+
+	GraphDAO.getTheShortestPathToBuy
+
+Va falloir potasser quelque peu le RefCard <http://docs.neo4j.org/refcard/2.0/>

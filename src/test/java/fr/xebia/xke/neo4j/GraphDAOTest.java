@@ -67,4 +67,13 @@ public class GraphDAOTest extends AbstractTest {
         nbSell = graphDAO.getNumberOfSales("ChaussureLouboutin", cal.getTime());
         assertThat(nbSell).isEqualTo(1);
     }
+
+    @Test
+    public void givenProductName_testTheShortestToBuy() {
+        List<String> shortestPathToBuy = graphDAO.getTheShortestPathToBuy("SacHermes");
+        assertThat(shortestPathToBuy).containsOnly("Racine", "Maroquinerie", "Sac à main", "SacHermes");
+
+        shortestPathToBuy = graphDAO.getTheShortestPathToBuy("SacLouisVitton");
+        assertThat(shortestPathToBuy).containsOnly("Racine", "Maroquinerie", "Sac à main", "SacLouisVitton");
+    }
 }
