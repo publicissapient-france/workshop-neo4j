@@ -41,7 +41,8 @@ public class GraphDAO {
         ExecutionResult result = engine.execute(
                 "MATCH (shoppingCart:ShoppingCart)-[:CONTAINS]->product " +
                         "WHERE shoppingCart.name={shoppingCartName} " +
-                        "RETURN product.name as productName", params);
+                        "RETURN product.name as productName", params
+        );
 
         products = Lists.newArrayList(result.<String>columnAs("productName"));
         return products;
@@ -58,7 +59,8 @@ public class GraphDAO {
         ExecutionResult result = engine.execute(
                 "MATCH (product:Product)<-[:CONTAINS]-(shoppingCart:ShoppingCart)-[:CONTAINS]->(recommendedProducts:Product) " +
                         "WHERE product.name = {productName}" +
-                        "RETURN recommendedProducts.name as recommendedProductsName", params);
+                        "RETURN recommendedProducts.name as recommendedProductsName", params
+        );
         recommendedProducts = Lists.newArrayList(result.<String>columnAs("recommendedProductsName"));
         return recommendedProducts;
     }
@@ -121,8 +123,27 @@ public class GraphDAO {
         ExecutionResult result = engine.execute(
                 "MATCH (date:Date)<-[:DATE]-shoppingCart-[:CONTAINS]->(product:Product) " +
                         "WHERE date.name={formattedDate} AND product.name={productName}" +
-                        "RETURN count(distinct shoppingCart) as shoppingCartCount", params);
+                        "RETURN count(distinct shoppingCart) as shoppingCartCount", params
+        );
 
         return Integer.parseInt(Iterables.getOnlyElement(result).get("shoppingCartCount").toString());
+    }
+
+    /**
+     * @param productName The name of the product for which we want the fasted way to buy it
+     * @return The list of categories than we must cross to see the product
+     */
+    public List<String> getTheShortestPathToBuy(String productName) {
+        ExecutionEngine engine = new ExecutionEngine(graphDb);
+        List<List<String>> paths;
+        Map params = ImmutableMap.of("productName", productName);
+
+        ExecutionResult result = engine.execute(
+                "MATCH p=shortestPath((root:Category{name:'Racine'})-[:SUB_CAT*]->(bag:Product{name:{productName} }))\n" +
+                        "RETURN extract(n IN nodes(p) | n.name) as categoriesName", params
+        );
+
+        paths = Lists.newArrayList(result.<List<String>>columnAs("categoriesName"));
+        return paths.get(0);
     }
 }
