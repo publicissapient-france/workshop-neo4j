@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.xebia.xke</groupId>
-    <artifactId>neo4j</artifactId>
+    <artifactId>workshop-neo4j</artifactId>
     <version>1.0</version>
 
     <properties>
